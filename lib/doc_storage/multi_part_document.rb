@@ -1,6 +1,6 @@
 module DocStorage
   class MultiPartDocument
-    attr_reader :parts
+    attr_accessor :parts
 
     class << self
       private

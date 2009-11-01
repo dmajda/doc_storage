@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + "/syntax_error"
 
 module DocStorage
   class SimpleDocument
-    attr_reader :headers, :body
+    attr_accessor :headers, :body
 
     class << self
       private
