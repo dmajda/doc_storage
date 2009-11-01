@@ -1,5 +1,3 @@
-require File.dirname(__FILE__) + "/syntax_error"
-
 module DocStorage
   class SimpleDocument
     attr_accessor :headers, :body

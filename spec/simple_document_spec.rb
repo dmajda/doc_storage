@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../lib/doc_storage/simple_document"
+require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
   describe SimpleDocument do

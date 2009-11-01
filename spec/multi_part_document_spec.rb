@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../lib/doc_storage/multi_part_document"
+require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
   describe MultiPartDocument do
