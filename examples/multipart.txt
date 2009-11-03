@@ -1,0 +1,12 @@
+Boundary: =====
+
+--=====
+Author: Fan
+Datetime: 2009-11-01 20:07:15
+
+Your article is really great!
+--=====
+Author: Critic
+Datetime: 2009-11-01 20:10:54
+
+Your article sucks!

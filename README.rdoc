@@ -1,0 +1,117 @@
+= DocStorage
+
+DocStorage is a simple Ruby library for manipulating documents containing a text
+and metadata. These documents can be used to implement a blog, wiki, or similar
+application without a relational database.
+
+The library distinguishes between <em>simple documents</em> and <em>multipart
+documents</em>. A simple document looks like a RFC 822 message and it is
+suitable for storing a text associated with some metadata (e.g. a blog article
+with a title and a publication date). A multipart document is loosely based on
+the MIME multipart message format and allows storing multiple simple documents
+(e.g. blog comments, each with an author and a publication date) in one file.
+
+== Document Format
+
+A simple document looks like this:
+
+  Title: My blog article
+  Datetime: 2009-11-01 18:03:27
+
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel lorem
+  massa. Sed blandit orci id leo blandit ut fermentum lacus ullamcorper.
+  Suspendisse metus sapien, consectetur vitae imperdiet vel, ornare a metus.
+  In imperdiet euismod mi, nec volutpat lorem porta id.
+
+
+A multipart document looks like this:
+
+  Boundary: =====
+  
+  --=====
+  Author: Fan
+  Datetime: 2009-11-01 20:07:15
+  
+  Your article is really great!
+  --=====
+  Author: Critic
+  Datetime: 2009-11-01 20:10:54
+  
+  Your article sucks!
+
+See the documentation of <tt>DocStorage::SimpleDocument</tt> and
+<tt>DocStorage::MultiPartDocument</tt> classes for more formal format
+description.
+
+== Example Usage
+
+=== Simple Documents
+
+  require "lib/doc_storage"
+  
+  # Create a new document with headers and body
+  document = DocStorage::SimpleDocument.new(
+    {
+      "Title"    => "Finishing the documentation",
+      "Priority" => "urgent"
+    },
+    "We should finish the documentation ASAP."
+  )
+  
+  # Parse a file
+  document = File.open("examples/simple.txt", "r") do |f|
+    DocStorage::SimpleDocument.parse(f)
+  end
+  
+  # Document manipulation
+  document.headers["Tags"] = "example"
+  document.body += "Nulla mi dui, pellentesque et accumsan vitae, mattis et velit."
+  
+  # Save the modified document
+  File.open("examples/simple_modified.txt", "w") do |f|
+    f.write(document)
+  end
+
+=== Multipart Documents
+  require "lib/doc_storage"
+  
+  # Create a new document with two parts
+  document = DocStorage::MultiPartDocument.new([
+    DocStorage::SimpleDocument.new(
+      {
+        "Title"    => "Finishing the documentation",
+        "Priority" => "urgent"
+      },
+      "We should finish the documentation ASAP."
+    ),
+    DocStorage::SimpleDocument.new(
+      {
+        "Title"    => "Finishing the code",
+        "Priority" => "more urgent"
+      },
+      "But we should finish the code first!"
+    ),
+  ])
+  
+  # Parse a file
+  document = File.open("examples/multipart.txt", "r") do |f|
+    DocStorage::MultiPartDocument.parse(f)
+  end
+  
+  # Document manipulation
+  document.parts << DocStorage::SimpleDocument.new(
+    {
+      "Author"   => "Middle man",
+      "Datetime" => "2009-11-01 21:15:33",
+    },
+    "I think your article is neither good nor bad."
+  )
+  
+  # Save the modified document
+  File.open("examples/multipart_modified.txt", "w") do |f|
+    f.write(document)
+  end
+
+== Author
+
+DocStorage was brought to you by David Majda (david@majda.cz[mailto:david@majda.cz], www.majda.cz).

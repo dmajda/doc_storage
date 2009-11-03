@@ -1,0 +1,7 @@
+Title: My blog article
+Datetime: 2009-11-01 18:03:27
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel lorem
+massa. Sed blandit orci id leo blandit ut fermentum lacus ullamcorper.
+Suspendisse metus sapien, consectetur vitae imperdiet vel, ornare a metus.
+In imperdiet euismod mi, nec volutpat lorem porta id.
