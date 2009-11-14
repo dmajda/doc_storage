@@ -2,9 +2,7 @@ require "rake"
 require "rake/rdoctask"
 require "spec/rake/spectask"
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*.rb']
-end
+Spec::Rake::SpecTask.new
 
 Rake::RDocTask.new do |t|
   t.main = "README.rdoc"
