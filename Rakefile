@@ -1,8 +1,9 @@
-require "rake"
 require "rake/rdoctask"
 require "spec/rake/spectask"
 
-Spec::Rake::SpecTask.new
+Spec::Rake::SpecTask.new do |t|
+  t.spec_opts = ["--color", "--format", "nested"]
+end
 
 Rake::RDocTask.new do |t|
   t.main = "README.rdoc"
