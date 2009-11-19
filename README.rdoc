@@ -1,5 +1,7 @@
 = DocStorage
 
+http://github.com/dmajda/doc_storage
+
 DocStorage is a simple Ruby library for manipulating documents containing a text
 and metadata. These documents can be used to implement a blog, wiki, or similar
 application without a relational database.
@@ -42,6 +44,10 @@ A multipart document looks like this:
 See the documentation of <tt>DocStorage::SimpleDocument</tt> and
 <tt>DocStorage::MultiPartDocument</tt> classes for more formal format
 description.
+
+== Installation
+
+  sudo gem install doc_storage --source http://gemcutter.org
 
 == Example Usage
 
