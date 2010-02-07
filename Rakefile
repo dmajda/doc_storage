@@ -3,7 +3,7 @@ require "rake/rdoctask"
 require "spec/rake/spectask"
 
 Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ["--color", "--format", "nested"]
+  t.spec_opts = ["--color"]
 end
 
 Rake::RDocTask.new do |t|
