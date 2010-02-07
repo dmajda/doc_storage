@@ -42,7 +42,7 @@ A multipart document looks like this:
   Your article sucks!
 
 See the documentation of <tt>DocStorage::SimpleDocument</tt> and
-<tt>DocStorage::MultiPartDocument</tt> classes for more formal format
+<tt>DocStorage::MultipartDocument</tt> classes for more formal format
 description.
 
 == Installation
@@ -82,7 +82,7 @@ description.
   require "lib/doc_storage"
   
   # Create a new document with two parts
-  document = DocStorage::MultiPartDocument.new([
+  document = DocStorage::MultipartDocument.new([
     DocStorage::SimpleDocument.new(
       {
         "Title"    => "Finishing the documentation",
@@ -101,7 +101,7 @@ description.
   
   # Parse a file
   document = File.open("examples/multipart.txt", "r") do |f|
-    DocStorage::MultiPartDocument.parse(f)
+    DocStorage::MultipartDocument.parse(f)
   end
   
   # Document manipulation
