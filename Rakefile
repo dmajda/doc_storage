@@ -25,7 +25,7 @@ specification = Gem::Specification.new do |s|
 
   s.author = "David Majda"
   s.email = "david@majda.cz"
-  s.homepage = "http://github.com/dmajda/doc_storage"
+  s.homepage = "http://bitbucket.org/dmajda/doc_storage/"
 
   s.files = FileList[
               "Rakefile",
