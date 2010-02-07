@@ -3,7 +3,7 @@ dir = File.dirname(__FILE__)
 require "#{dir}/../lib/doc_storage"
 
 # Create a new document with two parts
-document = DocStorage::MultiPartDocument.new([
+document = DocStorage::MultipartDocument.new([
   DocStorage::SimpleDocument.new(
     {
       "Title"    => "Finishing the documentation",
@@ -22,7 +22,7 @@ document = DocStorage::MultiPartDocument.new([
 
 # Parse a file
 document = File.open("#{dir}/multipart.txt", "r") do |f|
-  DocStorage::MultiPartDocument.parse(f)
+  DocStorage::MultipartDocument.parse(f)
 end
 
 # Document manipulation

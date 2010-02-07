@@ -145,7 +145,7 @@ module DocStorage
         #   read.
         #
         # The +boundary+ parameter is provided mainly for parsing parts of
-        # multipart documents (see the +MultiPartDocument+ class documentation)
+        # multipart documents (see the +MultipartDocument+ class documentation)
         # and usually should not be used.
         #
         # If any syntax error occurs, a +SyntaxError+ exception is raised. This

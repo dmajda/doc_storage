@@ -1,10 +1,10 @@
 module DocStorage
-  # The +MultiPartDocument+ class represents a document consisting of several
+  # The +MultipartDocument+ class represents a document consisting of several
   # simple documents (see the +SimpleDocument+ class documentation for a
   # description), loosely based on the MIME multipart message format. It is
   # suitable for storing multiple documents containing a text associated with
   # some metadata (e.g. blog comments, each with an author and a publication
-  # date). The +MultiPartDocument+ class allows to create the document
+  # date). The +MultipartDocument+ class allows to create the document
   # programatically, parse it from a file, manipulate its structure and save it
   # to a file.
   #
@@ -39,7 +39,7 @@ module DocStorage
   #   require "lib/doc_storage"
   #
   #   # Create a new document with two parts
-  #   document = DocStorage::MultiPartDocument.new([
+  #   document = DocStorage::MultipartDocument.new([
   #     DocStorage::SimpleDocument.new(
   #       {
   #         "Title"    => "Finishing the documentation",
@@ -58,7 +58,7 @@ module DocStorage
   #
   #   # Parse a file
   #   document = File.open("examples/multipart.txt", "r") do |f|
-  #     DocStorage::MultiPartDocument.parse(f)
+  #     DocStorage::MultipartDocument.parse(f)
   #   end
   #
   #   # Document manipulation
@@ -74,7 +74,7 @@ module DocStorage
   #   File.open("examples/multipart_modified.txt", "w") do |f|
   #     f.write(document)
   #   end
-  class MultiPartDocument
+  class MultipartDocument
     # document parts (+Array+ of <tt>DocStorage::SimpleDocument</tt>)
     attr_accessor :parts
 
@@ -89,12 +89,12 @@ module DocStorage
             parts << SimpleDocument.parse(io, boundary)
           end
 
-          MultiPartDocument.new(parts)
+          MultipartDocument.new(parts)
         end
 
       public
         # Parses a multipart document from its serialized form and returns a new
-        # +MultiPartDocument+ instance.
+        # +MultipartDocument+ instance.
         #
         # The +source+ can be either an +IO+-like object or a +String+. In the
         # latter case, it is assumed that the string contains a serialized
@@ -106,14 +106,14 @@ module DocStorage
         # headers and body is parsed before the end of file) or if no "Boundary"
         # header is found in the prologue.
         #
-        # See the +MultiPartDocument+ class documentation for a detailed
+        # See the +MultipartDocument+ class documentation for a detailed
         # document format description.
         def parse(source)
           parse_from_io(source.is_a?(String) ? StringIO.new(source) : source)
         end
     end
 
-    # Creates a new +MultiPartDocument+ with given parts.
+    # Creates a new +MultipartDocument+ with given parts.
     def initialize(parts)
       @parts = parts
     end
@@ -125,7 +125,7 @@ module DocStorage
     end
 
     # Returns string representation of this document. The result is in format
-    # described in the +MultiPartDocument+ class documentation.
+    # described in the +MultipartDocument+ class documentation.
     def to_s
       # The boundary is just a random string. We do not check if the boudnary
       # appears anywhere in the subdocuments, which may lead to malformed
