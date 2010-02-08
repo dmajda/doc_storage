@@ -1,6 +1,6 @@
 module DocStorage
   # The +SimpleDocument+ class represents a simple RFC 822-like document,
-  # suitable for storing a text associated with some metadata (e.g. a blog
+  # suitable for storing text associated with some metadata (e.g. a blog
   # article with a title and a publication date). The +SimpleDocument+ class
   # allows to create the document programatically, parse it from a file,
   # manipulate its structure and save it to a file.
@@ -23,11 +23,11 @@ module DocStorage
   #   Suspendisse metus sapien, consectetur vitae imperdiet vel, ornare a metus.
   #   In imperdiet euismod mi, nec volutpat lorem porta id.
   #
-  # The headers are first, each on its own line. The header names are separated
-  # from values by a colon (":") and any amount of whitespace. Duplicate headers
-  # are allowed with later value overwriting the earlier one. Otherwise, the
-  # order of the headers does not matter. The body is separated from the headers
-  # by an empty line.
+  # Headers are first, each on its own line. Header names are separated from
+  # values by a colon (":") and any amount of whitespace. Duplicate headers are
+  # allowed with later value overwriting the earlier one. Other than that, the
+  # order of headers does not matter. The body is separated from headers by
+  # empty line.
   #
   # Documents without any headers are perfectly legal and so are documents with
   # an empty body. However, the separating line must be always present. This
@@ -149,7 +149,7 @@ module DocStorage
         # and usually should not be used.
         #
         # If any syntax error occurs, a +SyntaxError+ exception is raised. This
-        # can happen when an invalid header is encountered, the headers are not
+        # can happen when an invalid header is encountered, headers are not
         # terminated (no empty line separating headers and body is parsed before
         # the end of file) or if no "Boundary" header is found when detecting a
         # boundary.
@@ -177,8 +177,8 @@ module DocStorage
         @body == other.body
     end
 
-    # Returns string representation of this document. The result is in format
-    # described in the +SimpleDocument+ class documentation.
+    # Returns string representation of this document. The result is in the
+    # format described in the +SimpleDocument+ class documentation.
     def to_s
       serialized_headers = @headers.keys.sort.inject("") do |acc, key|
         acc + "#{key}: #{@headers[key]}\n"

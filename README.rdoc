@@ -1,21 +1,19 @@
 = DocStorage
 
-http://bitbucket.org/dmajda/doc_storage/
+{http://bitbucket.org/dmajda/doc_storage/}[http://bitbucket.org/dmajda/doc_storage/]
 
-DocStorage is a simple Ruby library for manipulating documents containing a text
+DocStorage is a simple Ruby library for manipulating documents containing text
 and metadata. These documents can be used to implement a blog, wiki, or similar
-application without a relational database.
+application without a database.
+
+== Document Formats
 
 The library distinguishes between <em>simple documents</em> and <em>multipart
-documents</em>. A simple document looks like a RFC 822 message and it is
-suitable for storing a text associated with some metadata (e.g. a blog article
-with a title and a publication date). A multipart document is loosely based on
-the MIME multipart message format and allows storing multiple simple documents
-(e.g. blog comments, each with an author and a publication date) in one file.
+documents</em>.
 
-== Document Format
-
-A simple document looks like this:
+A simple document is similar to a RFC 822 message and it is suitable for storing
+text associated with some metadata (e.g. a blog article with a title and a
+publication date). It looks like this:
 
   Title: My blog article
   Datetime: 2009-11-01 18:03:27
@@ -25,8 +23,9 @@ A simple document looks like this:
   Suspendisse metus sapien, consectetur vitae imperdiet vel, ornare a metus.
   In imperdiet euismod mi, nec volutpat lorem porta id.
 
-
-A multipart document looks like this:
+A multipart document is loosely based on the MIME multipart message format and
+allows storing multiple simple documents (e.g. blog comments, each with an
+author and a publication date) in one file. It looks like this:
 
   Boundary: =====
   
@@ -47,7 +46,7 @@ description.
 
 == Installation
 
-  sudo gem install doc_storage --source http://gemcutter.org
+  sudo gem install doc_storage --source http://gemcutter.org/
 
 == Example Usage
 

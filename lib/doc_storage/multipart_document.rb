@@ -2,11 +2,10 @@ module DocStorage
   # The +MultipartDocument+ class represents a document consisting of several
   # simple documents (see the +SimpleDocument+ class documentation for a
   # description), loosely based on the MIME multipart message format. It is
-  # suitable for storing multiple documents containing a text associated with
-  # some metadata (e.g. blog comments, each with an author and a publication
-  # date). The +MultipartDocument+ class allows to create the document
-  # programatically, parse it from a file, manipulate its structure and save it
-  # to a file.
+  # suitable for storing multiple documents containing text associated with some
+  # metadata (e.g. blog comments, each with an author and a publication date).
+  # The +MultipartDocument+ class allows to create the document programatically,
+  # parse it from a file, manipulate its structure and save it to a file.
   #
   # == Document Format
   #
@@ -30,9 +29,9 @@ module DocStorage
   # <em>boundary string</em>. The first document is a _prologue_ and it defines
   # the boundary string (without the "--" prefix) in its "Boundary" header. All
   # other headers of the prologue are ignored and so is its body. Remaining
-  # documents are the _parts_ of the multipart document. Documents without any
-  # parts are perfectly legal, however the prologue with the boundary definition
-  # must be always present.
+  # documents are _parts_ of the multipart document. Documents without any parts
+  # are perfectly legal, however the prologue with the boundary definition must
+  # be always present.
   #
   # == Example Usage
   #
@@ -124,8 +123,8 @@ module DocStorage
       other.instance_of?(self.class) && @parts == other.parts
     end
 
-    # Returns string representation of this document. The result is in format
-    # described in the +MultipartDocument+ class documentation.
+    # Returns string representation of this document. The result is in the
+    # format described in the +MultipartDocument+ class documentation.
     def to_s
       # The boundary is just a random string. We do not check if the boudnary
       # appears anywhere in the subdocuments, which may lead to malformed
