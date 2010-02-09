@@ -11,9 +11,9 @@ document = DocStorage::SimpleDocument.new(
   "We should finish the documentation ASAP."
 )
 
-# Parse a file
+# Load from a file
 document = File.open("#{dir}/simple.txt", "r") do |f|
-  DocStorage::SimpleDocument.parse(f)
+  DocStorage::SimpleDocument.load(f)
 end
 
 # Document manipulation

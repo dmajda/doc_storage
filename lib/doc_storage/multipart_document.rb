@@ -5,7 +5,7 @@ module DocStorage
   # suitable for storing multiple documents containing text associated with some
   # metadata (e.g. blog comments, each with an author and a publication date).
   # The +MultipartDocument+ class allows to create the document programatically,
-  # parse it from a file, manipulate its structure and save it to a file.
+  # load it from a file, manipulate its structure and save it to a file.
   #
   # == Document Format
   #
@@ -55,9 +55,9 @@ module DocStorage
   #     ),
   #   ])
   #
-  #   # Parse a file
+  #   # Load from a file
   #   document = File.open("examples/multipart.txt", "r") do |f|
-  #     DocStorage::MultipartDocument.parse(f)
+  #     DocStorage::MultipartDocument.load(f)
   #   end
   #
   #   # Document manipulation
@@ -79,20 +79,20 @@ module DocStorage
 
     class << self
       private
-        def parse_from_io(io)
-          prologue = SimpleDocument.parse(io, :detect)
+        def load_from_io(io)
+          prologue = SimpleDocument.load(io, :detect)
           boundary = prologue.headers["Boundary"]
 
           parts = []
           until io.eof?
-            parts << SimpleDocument.parse(io, boundary)
+            parts << SimpleDocument.load(io, boundary)
           end
 
           MultipartDocument.new(parts)
         end
 
       public
-        # Parses a multipart document from its serialized form and returns a new
+        # Loads a multipart document from its serialized form and returns a new
         # +MultipartDocument+ instance.
         #
         # The +source+ can be either an +IO+-like object or a +String+. In the
@@ -107,8 +107,8 @@ module DocStorage
         #
         # See the +MultipartDocument+ class documentation for a detailed
         # document format description.
-        def parse(source)
-          parse_from_io(source.is_a?(String) ? StringIO.new(source) : source)
+        def load(source)
+          load_from_io(source.is_a?(String) ? StringIO.new(source) : source)
         end
     end
 

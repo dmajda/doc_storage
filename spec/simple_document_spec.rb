@@ -2,9 +2,9 @@ require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
   describe SimpleDocument do
-    Spec::Matchers.define :parse_as_document do |document|
+    Spec::Matchers.define :load_as_document do |document|
       match do |string|
-        SimpleDocument.parse(string) == document
+        SimpleDocument.load(string) == document
       end
     end
 
@@ -57,49 +57,49 @@ module DocStorage
       end
     end
 
-    describe "parse" do
-      it "parses document with no headers and no body" do
-        "\n".should parse_as_document(@document_without_headers_without_body)
+    describe "load" do
+      it "loads document with no headers and no body" do
+        "\n".should load_as_document(@document_without_headers_without_body)
       end
 
-      it "parses document with no headers and body" do
-        "\nline1\nline2".should parse_as_document(
+      it "loads document with no headers and body" do
+        "\nline1\nline2".should load_as_document(
           @document_without_headers_with_body
         )
       end
 
-      it "parses document with headers and no body" do
-        "a: 42\nb: 43\n\n".should parse_as_document(
+      it "loads document with headers and no body" do
+        "a: 42\nb: 43\n\n".should load_as_document(
           @document_with_headers_without_body
         )
       end
 
-      it "parses document with headers and body" do
-        "a: 42\nb: 43\n\nline1\nline2".should parse_as_document(
+      it "loads document with headers and body" do
+        "a: 42\nb: 43\n\nline1\nline2".should load_as_document(
           @document_with_headers_with_body
         )
       end
 
-      it "does not parse document with invalid headers" do
+      it "does not load document with invalid headers" do
         lambda {
-          SimpleDocument.parse("bullshit")
+          SimpleDocument.load("bullshit")
         }.should raise_error(SyntaxError, "Invalid header: \"bullshit\".")
       end
 
-      it "does not parse document with unterminated headers" do
+      it "does not load document with unterminated headers" do
         lambda {
-          SimpleDocument.parse("a: 42\nb: 42\n")
+          SimpleDocument.load("a: 42\nb: 42\n")
         }.should raise_error(SyntaxError, "Unterminated headers.")
       end
 
-      it "parses document from IO-like object" do
+      it "loads document from IO-like object" do
         StringIO.open("a: 42\nb: 43\n\nline1\nline2") do |io|
-          SimpleDocument.parse(io).should == @document_with_headers_with_body
+          SimpleDocument.load(io).should == @document_with_headers_with_body
         end
       end
 
-      it "parses document when detecting a boundary" do
-        SimpleDocument.parse(
+      it "loads document when detecting a boundary" do
+        SimpleDocument.load(
           "a: 42\nb: 43\nBoundary: =====\n\nline1\nline2\n--=====\nbullshit",
           :detect
         ).should == SimpleDocument.new(
@@ -108,17 +108,17 @@ module DocStorage
         )
       end
 
-      it "does not parse document when detecting a boundary and no boundary defined" do
+      it "does not load document when detecting a boundary and no boundary defined" do
         lambda {
-          SimpleDocument.parse(
+          SimpleDocument.load(
             "a: 42\nb: 43\n\nline1\nline2\n--=====\nbullshit",
             :detect
           )
         }.should raise_error(SyntaxError, "No boundary defined.")
       end
 
-      it "parses document when passed a boundary" do
-        SimpleDocument.parse(
+      it "loads document when passed a boundary" do
+        SimpleDocument.load(
           "a: 42\nb: 43\n\nline1\nline2\n--=====\nbullshit",
           "====="
         ).should == @document_with_headers_with_body

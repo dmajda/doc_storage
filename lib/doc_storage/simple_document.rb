@@ -47,9 +47,9 @@ module DocStorage
   #     "We should finish the documentation ASAP."
   #   )
   #
-  #   # Parse a file
+  #   # Load from a file
   #   document = File.open("examples/simple.txt", "r") do |f|
-  #     DocStorage::SimpleDocument.parse(f)
+  #     DocStorage::SimpleDocument.load(f)
   #   end
   #
   #   # Document manipulation
@@ -113,7 +113,7 @@ module DocStorage
           end
         end
 
-        def parse_from_io(io, boundary)
+        def load_from_io(io, boundary)
           headers = parse_headers(io, boundary == :detect)
           boundary = headers["Boundary"] if boundary == :detect
           body = parse_body(io, boundary)
@@ -122,7 +122,7 @@ module DocStorage
         end
 
       public
-        # Parses a simple document from its serialized form and returns a new
+        # Loads a simple document from its serialized form and returns a new
         # +SimpleDocument+ instance.
         #
         # The +source+ can be either an +IO+-like object or a +String+. In the
@@ -156,8 +156,8 @@ module DocStorage
         #
         # See the +SimpleDocument+ class documentation for a detailed document
         # format description.
-        def parse(source, boundary = nil)
-          parse_from_io(
+        def load(source, boundary = nil)
+          load_from_io(
             source.is_a?(String) ? StringIO.new(source) : source,
             boundary
           )

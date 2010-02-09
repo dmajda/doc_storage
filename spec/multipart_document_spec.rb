@@ -2,9 +2,9 @@ require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
   describe MultipartDocument do
-    Spec::Matchers.define :parse_as_multipart_document do |document|
+    Spec::Matchers.define :load_as_multipart_document do |document|
       match do |string|
-        MultipartDocument::parse(string) == document
+        MultipartDocument::load(string) == document
       end
     end
 
@@ -50,14 +50,14 @@ module DocStorage
       end
     end
 
-    describe "parse" do
-      it "parses document with no parts" do
-        "Boundary: =====\n\n".should parse_as_multipart_document(
+    describe "load" do
+      it "loads document with no parts" do
+        "Boundary: =====\n\n".should load_as_multipart_document(
           @document_with_no_parts
         )
       end
 
-      it "parses document with multiple parts" do
+      it "loads document with multiple parts" do
         [
           "Boundary: =====",
           "",
@@ -73,18 +73,18 @@ module DocStorage
           "",
           "line3",
           "line4",
-        ].join("\n").should parse_as_multipart_document(
+        ].join("\n").should load_as_multipart_document(
           @document_with_multiple_parts
         )
       end
 
-      it "does not parse document with no Boundary: header" do
+      it "does not load document with no Boundary: header" do
         lambda {
-          MultipartDocument.parse("\n\n")
+          MultipartDocument.load("\n\n")
         }.should raise_error(SyntaxError, "No boundary defined.")
       end
 
-      it "parses document from IO-like object" do
+      it "loads document from IO-like object" do
         StringIO.open(
           [
             "Boundary: =====",
@@ -103,7 +103,7 @@ module DocStorage
             "line4",
           ].join("\n")
         ) do |io|
-          MultipartDocument.parse(io).should == @document_with_multiple_parts
+          MultipartDocument.load(io).should == @document_with_multiple_parts
         end
       end
     end

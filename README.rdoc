@@ -63,9 +63,9 @@ description.
     "We should finish the documentation ASAP."
   )
   
-  # Parse a file
+  # Load from a file
   document = File.open("examples/simple.txt", "r") do |f|
-    DocStorage::SimpleDocument.parse(f)
+    DocStorage::SimpleDocument.load(f)
   end
   
   # Document manipulation
@@ -98,9 +98,9 @@ description.
     ),
   ])
   
-  # Parse a file
+  # Load from a file
   document = File.open("examples/multipart.txt", "r") do |f|
-    DocStorage::MultipartDocument.parse(f)
+    DocStorage::MultipartDocument.load(f)
   end
   
   # Document manipulation

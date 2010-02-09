@@ -20,9 +20,9 @@ document = DocStorage::MultipartDocument.new([
   ),
 ])
 
-# Parse a file
+# Load from a file
 document = File.open("#{dir}/multipart.txt", "r") do |f|
-  DocStorage::MultipartDocument.parse(f)
+  DocStorage::MultipartDocument.load(f)
 end
 
 # Document manipulation
