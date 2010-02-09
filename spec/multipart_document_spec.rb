@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
   describe MultipartDocument do
+    MULTIPART_FIXTURE_FILE = File.dirname(__FILE__) + "/fixtures/multipart.txt"
+
     Spec::Matchers.define :load_as_multipart_document do |document|
       match do |string|
         MultipartDocument::load(string) == document
@@ -105,6 +107,13 @@ module DocStorage
         ) do |io|
           MultipartDocument.load(io).should == @document_with_multiple_parts
         end
+      end
+    end
+
+    describe "load_file" do
+      it "loads document" do
+        MultipartDocument.load_file(MULTIPART_FIXTURE_FILE).should ==
+          @document_with_multiple_parts
       end
     end
 

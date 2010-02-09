@@ -1,0 +1,14 @@
+Boundary: =====
+
+--=====
+a: 42
+b: 43
+
+line1
+line2
+--=====
+c: 44
+d: 45
+
+line3
+line4

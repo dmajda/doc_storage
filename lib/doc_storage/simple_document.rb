@@ -48,9 +48,7 @@ module DocStorage
   #   )
   #
   #   # Load from a file
-  #   document = File.open("examples/simple.txt", "r") do |f|
-  #     DocStorage::SimpleDocument.load(f)
-  #   end
+  #   document = DocStorage::SimpleDocument.load_file("examples/simple.txt")
   #
   #   # Document manipulation
   #   document.headers["Tags"] = "example"
@@ -173,6 +171,17 @@ module DocStorage
             source.is_a?(String) ? StringIO.new(source) : source,
             boundary
           )
+        end
+
+        # Loads a simple document from a file and returns a new +SimpleDocument+
+        # instance. This method is just a thin wrapper around
+        # SimpleDocument#load -- see its documentation for description of the
+        # behavior and parameters of this method.
+        #
+        # See the +SimpleDocument+ class documentation for a detailed document
+        # format description.
+        def load_file(file, boundary = nil)
+          File.open(file, "r") { |f| load(f, boundary) }
         end
     end
 

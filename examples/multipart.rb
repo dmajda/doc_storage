@@ -21,9 +21,7 @@ document = DocStorage::MultipartDocument.new([
 ])
 
 # Load from a file
-document = File.open("#{dir}/multipart.txt", "r") do |f|
-  DocStorage::MultipartDocument.load(f)
-end
+document = DocStorage::MultipartDocument.load_file("examples/multipart.txt")
 
 # Document manipulation
 document.parts << DocStorage::SimpleDocument.new(

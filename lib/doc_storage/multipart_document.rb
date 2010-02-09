@@ -56,9 +56,7 @@ module DocStorage
   #   ])
   #
   #   # Load from a file
-  #   document = File.open("examples/multipart.txt", "r") do |f|
-  #     DocStorage::MultipartDocument.load(f)
-  #   end
+  #   document = DocStorage::MultipartDocument.load_file("examples/multipart.txt")
   #
   #   # Document manipulation
   #   document.parts << DocStorage::SimpleDocument.new(
@@ -109,6 +107,17 @@ module DocStorage
         # document format description.
         def load(source)
           load_from_io(source.is_a?(String) ? StringIO.new(source) : source)
+        end
+
+        # Loads a multipart document from a file and returns a new
+        # +MultipartDocument+ instance. This method is just a thin wrapper
+        # around MultipartDocument#load -- see its documentation for description
+        # of the behavior and parameters of this method.
+        #
+        # See the +MultipartDocument+ class documentation for a detailed
+        # document format description.
+        def load_file(file)
+          File.open(file, "r") { |f| load(f) }
         end
     end
 

@@ -12,9 +12,7 @@ document = DocStorage::SimpleDocument.new(
 )
 
 # Load from a file
-document = File.open("#{dir}/simple.txt", "r") do |f|
-  DocStorage::SimpleDocument.load(f)
-end
+document = DocStorage::SimpleDocument.load_file("examples/simple.txt")
 
 # Document manipulation
 document.headers["Tags"] = "example"

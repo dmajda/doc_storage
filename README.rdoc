@@ -64,9 +64,7 @@ description.
   )
   
   # Load from a file
-  document = File.open("examples/simple.txt", "r") do |f|
-    DocStorage::SimpleDocument.load(f)
-  end
+  document = DocStorage::SimpleDocument.load_file("examples/simple.txt")
   
   # Document manipulation
   document.headers["Tags"] = "example"
@@ -99,9 +97,7 @@ description.
   ])
   
   # Load from a file
-  document = File.open("examples/multipart.txt", "r") do |f|
-    DocStorage::MultipartDocument.load(f)
-  end
+  document = DocStorage::MultipartDocument.load_file("examples/multipart.txt")
   
   # Document manipulation
   document.parts << DocStorage::SimpleDocument.new(
