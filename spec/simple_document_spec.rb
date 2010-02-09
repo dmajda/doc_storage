@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
   describe SimpleDocument do
+    FIXTURE_FILE = File.dirname(__FILE__) + "/fixtures/simple.txt"
+
     Spec::Matchers.define :load_as_document do |document|
       match do |string|
         SimpleDocument.load(string) == document
@@ -122,6 +124,19 @@ module DocStorage
           "a: 42\nb: 43\n\nline1\nline2\n--=====\nbullshit",
           "====="
         ).should == @document_with_headers_with_body
+      end
+
+      it "works around the IO#readline bug" do
+        File.open(FIXTURE_FILE, "r") do |f|
+          SimpleDocument.load(f).should == @document_with_headers_with_body
+        end
+      end
+
+      it "works around the IO#read bug when passed a boundary" do
+        File.open(FIXTURE_FILE, "r") do |f|
+          SimpleDocument.load(f, "=====").should ==
+            @document_with_headers_with_body
+        end
       end
     end
 
