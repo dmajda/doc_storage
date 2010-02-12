@@ -111,4 +111,5 @@ description.
 
 == Author
 
-DocStorage was brought to you by David Majda (david@majda.cz[mailto:david@majda.cz], www.majda.cz).
+DocStorage was brought to you by David Majda
+(david@majda.cz[mailto:david@majda.cz], majda.cz[http://majda.cz/]).
