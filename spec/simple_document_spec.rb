@@ -1,3 +1,5 @@
+require "tempfile"
+
 require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
@@ -163,6 +165,39 @@ module DocStorage
       it "serializes document with headers and body" do
         @document_with_headers_with_body.to_s.should ==
           "a: 42\nb: 43\n\nline1\nline2"
+      end
+    end
+
+    describe "save" do
+      it "saves document" do
+        StringIO.open("", "w") do |io|
+          @document_with_headers_with_body.save(io)
+          io.string.should == "a: 42\nb: 43\n\nline1\nline2"
+        end
+      end
+    end
+
+    describe "save_file" do
+      it "saves document" do
+        # The "ensure" blocks aren't really necessary -- the tempfile will be
+        # closed and unlinked upon its object destruction automatically. However
+        # I think that being explicit and deterministic doesn't hurt.
+
+        begin
+          tempfile = Tempfile.new("doc_storage")
+          tempfile.close
+
+          @document_with_headers_with_body.save_file(tempfile.path)
+
+          tempfile.open
+          begin
+            tempfile.read.should == "a: 42\nb: 43\n\nline1\nline2"
+          ensure
+            tempfile.close
+          end
+        ensure
+          tempfile.unlink
+        end
       end
     end
   end

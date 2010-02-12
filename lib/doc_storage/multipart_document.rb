@@ -68,9 +68,7 @@ module DocStorage
   #   )
   #
   #   # Save the modified document
-  #   File.open("examples/multipart_modified.txt", "w") do |f|
-  #     f.write(document)
-  #   end
+  #   document.save_file("examples/multipart_modified.txt")
   class MultipartDocument
     # document parts (+Array+ of <tt>DocStorage::SimpleDocument</tt>)
     attr_accessor :parts
@@ -144,6 +142,18 @@ module DocStorage
 
       SimpleDocument.new({"Boundary" => boundary}, "").to_s +
         @parts.map { |part| "--#{boundary}\n#{part.to_s}" }.join("\n")
+    end
+
+    # Saves this document to an +IO+-like object. The result is in the format
+    # described in the +MultipartDocument+ class documentation.
+    def save(io)
+      io.write(to_s)
+    end
+
+    # Saves this document to a file. The result is in the format described in
+    # the +MultipartDocument+ class documentation.
+    def save_file(file)
+      File.open(file, "w") { |f| save(f) }
     end
   end
 end

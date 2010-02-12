@@ -33,6 +33,4 @@ document.parts << DocStorage::SimpleDocument.new(
 )
 
 # Save the modified document
-File.open("#{dir}/multipart_modified.txt", "w") do |f|
-  f.write(document)
-end
+document.save_file("#{dir}/multipart_modified.txt")

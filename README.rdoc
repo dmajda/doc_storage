@@ -71,9 +71,7 @@ description.
   document.body += "Nulla mi dui, pellentesque et accumsan vitae, mattis et velit."
   
   # Save the modified document
-  File.open("examples/simple_modified.txt", "w") do |f|
-    f.write(document)
-  end
+  document.save_file("examples/simple_modified.txt")
 
 === Multipart Documents
   require "lib/doc_storage"
@@ -109,9 +107,7 @@ description.
   )
   
   # Save the modified document
-  File.open("examples/multipart_modified.txt", "w") do |f|
-    f.write(document)
-  end
+  document.save_file("examples/multipart_modified.txt")
 
 == Author
 

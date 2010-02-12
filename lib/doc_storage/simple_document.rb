@@ -55,9 +55,7 @@ module DocStorage
   #   document.body += "Nulla mi dui, pellentesque et accumsan vitae, mattis et velit."
   #
   #   # Save the modified document
-  #   File.open("examples/simple_modified.txt", "w") do |f|
-  #     f.write(document)
-  #   end
+  #   document.save_file("examples/simple_modified.txt")
   class SimpleDocument
     # document headers (+Hash+)
     attr_accessor :headers
@@ -205,6 +203,18 @@ module DocStorage
         acc + "#{key}: #{@headers[key]}\n"
       end
       serialized_headers + "\n" + @body
+    end
+
+    # Saves this document to an +IO+-like object. The result is in the format
+    # described in the +SimpleDocument+ class documentation.
+    def save(io)
+      io.write(to_s)
+    end
+
+    # Saves this document to a file. The result is in the format described in
+    # the +SimpleDocument+ class documentation.
+    def save_file(file)
+      File.open(file, "w") { |f| save(f) }
     end
   end
 end

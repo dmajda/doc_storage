@@ -19,6 +19,4 @@ document.headers["Tags"] = "example"
 document.body += "Nulla mi dui, pellentesque et accumsan vitae, mattis et velit."
 
 # Save the modified document
-File.open("#{dir}/simple_modified.txt", "w") do |f|
-  f.write(document)
-end
+document.save_file("#{dir}/simple_modified.txt")

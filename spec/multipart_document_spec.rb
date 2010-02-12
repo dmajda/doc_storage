@@ -1,3 +1,5 @@
+require "tempfile"
+
 require File.dirname(__FILE__) + "/../lib/doc_storage"
 
 module DocStorage
@@ -142,6 +144,71 @@ module DocStorage
           "line3",
           "line4",
         ].join("\n")
+      end
+    end
+
+    describe "save" do
+      it "saves document" do
+        StringIO.open("", "w") do |io|
+          srand 0
+          @document_with_multiple_parts.save(io)
+          io.string.should == [
+            "Boundary: SV1ad7dNjtvYKxgyym6bMNxUyrLznijuZqZfpVasJyXZDttoNGbj5GFk0xJlY3CI",
+            "",
+            "--SV1ad7dNjtvYKxgyym6bMNxUyrLznijuZqZfpVasJyXZDttoNGbj5GFk0xJlY3CI",
+            "a: 42",
+            "b: 43",
+            "",
+            "line1",
+            "line2",
+            "--SV1ad7dNjtvYKxgyym6bMNxUyrLznijuZqZfpVasJyXZDttoNGbj5GFk0xJlY3CI",
+            "c: 44",
+            "d: 45",
+            "",
+            "line3",
+            "line4",
+          ].join("\n")
+        end
+      end
+    end
+
+    describe "save_file" do
+      it "saves document" do
+        # The "ensure" blocks aren't really necessary -- the tempfile will be
+        # closed and unlinked upon its object destruction automatically. However
+        # I think that being explicit and deterministic doesn't hurt.
+
+        begin
+          tempfile = Tempfile.new("doc_storage")
+          tempfile.close
+
+          srand 0
+          @document_with_multiple_parts.save_file(tempfile.path)
+
+          tempfile.open
+          begin
+            tempfile.read.should == [
+              "Boundary: SV1ad7dNjtvYKxgyym6bMNxUyrLznijuZqZfpVasJyXZDttoNGbj5GFk0xJlY3CI",
+              "",
+              "--SV1ad7dNjtvYKxgyym6bMNxUyrLznijuZqZfpVasJyXZDttoNGbj5GFk0xJlY3CI",
+              "a: 42",
+              "b: 43",
+              "",
+              "line1",
+              "line2",
+              "--SV1ad7dNjtvYKxgyym6bMNxUyrLznijuZqZfpVasJyXZDttoNGbj5GFk0xJlY3CI",
+              "c: 44",
+              "d: 45",
+              "",
+              "line3",
+              "line4",
+            ].join("\n")
+          ensure
+            tempfile.close
+          end
+        ensure
+          tempfile.unlink
+        end
       end
     end
   end
