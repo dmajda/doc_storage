@@ -8,8 +8,7 @@ module DocStorage
   # Each document consist of _headers_ and a _body_. Headers are a dictionary,
   # mapping string names to string values. Body is a free-form text. The header
   # names can contain only alphanumeric characters and a hyphen ("-") and they
-  # are case sensitive. The header values can contain any text that does not
-  # begin with whitespace and does not contain a CR or LF character.
+  # are case sensitive. The header values can contain any text.
   #
   # == Document Format
   #
@@ -24,10 +23,13 @@ module DocStorage
   #   In imperdiet euismod mi, nec volutpat lorem porta id.
   #
   # Headers are first, each on its own line. Header names are separated from
-  # values by a colon (":") and any amount of whitespace. Duplicate headers are
-  # allowed with later value overwriting the earlier one. Other than that, the
-  # order of headers does not matter. The body is separated from headers by
-  # empty line.
+  # values by a colon (":") and any amount of whitespace, trailing whitespace
+  # after values is ignored. Values containing special characters (especially
+  # newlines or leading/trailing whitepsace) must be enclosed in single or
+  # double quotes. Quoted values can contain usual C-like escape sequences (e.g.
+  # "\n", "\xFF", etc.). Duplicate headers are allowed with later value
+  # overwriting the earlier one. Other than that, the order of headers does not
+  # matter. The body is separated from headers by empty line.
   #
   # Documents without any headers are perfectly legal and so are documents with
   # an empty body. However, the separating line must be always present. This
@@ -64,6 +66,41 @@ module DocStorage
 
     class << self
       private
+        def parse_header_value(value)
+          case value[0..0]
+            when '"', "'"
+              quote = value[0..0]
+              if value[-1..-1] != quote
+                raise SyntaxError, "Unterminated header value: #{value.inspect}."
+              end
+
+              inner_text = value[1..-2]
+              if inner_text.gsub("\\" + quote, "").include?(quote)
+                raise SyntaxError, "Badly quoted header value: #{value.inspect}."
+              end
+
+              inner_text = inner_text.
+                gsub(/\\x([0-9a-fA-F]{2})/) { $1.to_i(16).chr }.
+                gsub(/\\([0-7]{3})/) { $1.to_i(8).chr }.
+                gsub("\\0", "\0").
+                gsub("\\a", "\a").
+                gsub("\\b", "\b").
+                gsub("\\t", "\t").
+                gsub("\\n", "\n").
+                gsub("\\v", "\v").
+                gsub("\\f", "\f").
+                gsub("\\r", "\r").
+                gsub("\\\"", "\"").
+                gsub("\\'", "'")
+              if inner_text !~ /^(\\\\|[^\\])*$/
+                raise SyntaxError, "Invalid escape sequence in header value: #{value.inspect}."
+              end
+              inner_text.gsub("\\\\", "\\")
+            else
+              value
+          end
+        end
+
         def parse_headers(io, detect_boundary)
           result = {}
           headers_terminated = false
@@ -71,8 +108,8 @@ module DocStorage
           until io.eof?
             line = io.readline
             case line
-              when /^([a-zA-Z0-9-]+):\s*(.*)\n$/
-                result[$1] = $2
+              when /^([a-zA-Z0-9-]+):(.*)\n$/
+                result[$1] = parse_header_value($2.strip)
               when "\n"
                 headers_terminated = true
                 break

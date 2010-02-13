@@ -25,6 +25,11 @@ module DocStorage
         {"a" => "42", "b" => "43"},
         "line1\nline2"
       )
+
+      @document_with_ugly_header = SimpleDocument.new(
+        {"a" => "\xFF\377\0\a\b\t\n\v\f\r\"'\\\xFF\377\0\a\b\t\n\v\f\r\"'\\"},
+        ""
+      )
     end
 
     describe "initialize" do
@@ -94,6 +99,56 @@ module DocStorage
         "a: \t 42\nb: \t 43\n\n".should load_as_document(
           @document_with_headers_without_body
         )
+
+      end
+
+      it "loads document with multiple whitespace after the value in headers" do
+        "a:42 \t \nb:43 \t \n\n".should load_as_document(
+          @document_with_headers_without_body
+        )
+      end
+
+      it "loads document with quoted header value" do
+        "a: \"42\"\nb: \"43\"\n\n".should load_as_document(
+          @document_with_headers_without_body
+        )
+        "a: '42'\nb: '43'\n\n".should load_as_document(
+          @document_with_headers_without_body
+        )
+
+        "a: \"\\xFF\\377\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\\\xFF\\377\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\\"\n\n".should load_as_document(
+          @document_with_ugly_header
+        )
+        "a: '\\xFF\\377\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\\\xFF\\377\\0\\a\\b\\t\\n\\v\\f\\r\\\"\\'\\\\'\n\n".should load_as_document(
+          @document_with_ugly_header
+        )
+      end
+
+      it "does not load document with unterminated header value" do
+        lambda {
+          SimpleDocument.load("a: \"42\n\n")
+        }.should raise_error(SyntaxError, "Unterminated header value: \"\\\"42\".")
+        lambda {
+          SimpleDocument.load("a: '42\n\n")
+        }.should raise_error(SyntaxError, "Unterminated header value: \"'42\".")
+      end
+
+      it "does not load document with badly quoted header value" do
+        lambda {
+          SimpleDocument.load("a: \"4\"2\"\n\n")
+        }.should raise_error(SyntaxError, "Badly quoted header value: \"\\\"4\\\"2\\\"\".")
+        lambda {
+          SimpleDocument.load("a: '4'2'\n\n")
+        }.should raise_error(SyntaxError, "Badly quoted header value: \"'4'2'\".")
+      end
+
+      it "does not load document with quoted header value containing invalid escape sequence" do
+        lambda {
+          SimpleDocument.load("a: \"4\\z2\"\n\n")
+        }.should raise_error(SyntaxError, "Invalid escape sequence in header value: \"\\\"4\\\\z2\\\"\".")
+        lambda {
+          SimpleDocument.load("a: '4\\z2'\n\n")
+        }.should raise_error(SyntaxError, "Invalid escape sequence in header value: \"'4\\\\z2'\".")
       end
 
       it "does not load document with invalid headers" do
