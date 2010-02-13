@@ -153,7 +153,7 @@ module DocStorage
 
       it "does not load document with invalid headers" do
         lambda {
-          SimpleDocument.load("bull\tshit")
+          SimpleDocument.load("bull\tshit\n")
         }.should raise_error(SyntaxError, "Invalid header: \"bull\\tshit\".")
       end
 

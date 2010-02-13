@@ -114,7 +114,7 @@ module DocStorage
                 headers_terminated = true
                 break
               else
-                raise SyntaxError, "Invalid header: #{line.strip.inspect}."
+                raise SyntaxError, "Invalid header: #{line.sub(/\n$/, "").inspect}."
             end
           end
 
