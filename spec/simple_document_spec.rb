@@ -84,6 +84,18 @@ module DocStorage
         )
       end
 
+      it "loads document with no whitespace after the colon in headers" do
+        "a:42\nb:43\n\n".should load_as_document(
+          @document_with_headers_without_body
+        )
+      end
+
+      it "loads document with multiple whitespace after the colon in headers" do
+        "a: \t 42\nb: \t 43\n\n".should load_as_document(
+          @document_with_headers_without_body
+        )
+      end
+
       it "does not load document with invalid headers" do
         lambda {
           SimpleDocument.load("bullshit")

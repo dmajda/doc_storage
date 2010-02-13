@@ -71,7 +71,7 @@ module DocStorage
           until io.eof?
             line = io.readline
             case line
-              when /^([a-zA-Z0-9-]+):\s(.*)\n$/
+              when /^([a-zA-Z0-9-]+):\s*(.*)\n$/
                 result[$1] = $2
               when "\n"
                 headers_terminated = true
