@@ -135,7 +135,7 @@ module DocStorage
     def to_s
       # The boundary is just a random string. We do not check if the boudnary
       # appears anywhere in the subdocuments, which may lead to malformed
-      # document.  This is of course principially wrong, but the probability of
+      # document. This is of course principially wrong, but the probability of
       # collision is so small that it does not bother me much.
       chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
       boundary = Array.new(64) { chars[rand(chars.length)] }.join("")
