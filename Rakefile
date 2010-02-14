@@ -14,7 +14,7 @@ end
 
 specification = Gem::Specification.new do |s|
   s.name = "doc_storage"
-  s.version = "0.9"
+  s.version = "1.0"
   s.summary = "Simple Ruby library for manipulating documents containing a " +
               "text and metadata."
   s.description = "DocStorage is a simple Ruby library for manipulating " +
