@@ -18,9 +18,9 @@ specification = Gem::Specification.new do |s|
   s.summary = "Simple Ruby library for manipulating documents containing a " +
               "text and metadata."
   s.description = "DocStorage is a simple Ruby library for manipulating " +
-                  "documents containing a text and metadata. These documents " +
+                  "documents containing text and metadata. These documents " +
                   "can be used to implement a blog, wiki, or similar " +
-                  "application without a relational database."
+                  "application without a database."
   s.required_ruby_version = ">= 1.8.6"
 
   s.author = "David Majda"
