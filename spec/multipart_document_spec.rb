@@ -17,8 +17,8 @@ module DocStorage
 
       @document_with_no_parts = MultipartDocument.new([])
       @document_with_multiple_parts = MultipartDocument.new([
-        SimpleDocument.new({"a" => "42", "b" => "43"}, "line1\nline2"),
-        SimpleDocument.new({"c" => "44", "d" => "45"}, "line3\nline4"),
+        SimpleDocument.new({ "a" => "42", "b" => "43" }, "line1\nline2"),
+        SimpleDocument.new({ "c" => "44", "d" => "45" }, "line3\nline4"),
       ])
     end
 

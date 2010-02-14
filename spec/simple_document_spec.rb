@@ -13,21 +13,21 @@ module DocStorage
     end
 
     before :each do
-      @document = SimpleDocument.new({"a" => 42, "b" => 43}, "body")
+      @document = SimpleDocument.new({ "a" => 42, "b" => 43 }, "body")
 
       @document_without_headers_without_body = SimpleDocument.new({}, "")
       @document_without_headers_with_body = SimpleDocument.new({}, "line1\nline2")
       @document_with_headers_without_body = SimpleDocument.new(
-        {"a" => "42", "b" => "43"},
+        { "a" => "42", "b" => "43" },
         ""
       )
       @document_with_headers_with_body = SimpleDocument.new(
-        {"a" => "42", "b" => "43"},
+        { "a" => "42", "b" => "43" },
         "line1\nline2"
       )
 
       @document_with_ugly_header = SimpleDocument.new(
-        {"a" => "\xFF\377\0\a\b\t\n\v\f\r\"'\\\xFF\377\0\a\b\t\n\v\f\r\"'\\"},
+        { "a" => "\xFF\377\0\a\b\t\n\v\f\r\"'\\\xFF\377\0\a\b\t\n\v\f\r\"'\\" },
         ""
       )
     end
@@ -61,8 +61,8 @@ module DocStorage
       end
 
       it "returns false when passed a SimpleDocument initialized with different parameters" do
-        @document.should_not == SimpleDocument.new({"a" => 44, "b" => 45}, "body")
-        @document.should_not == SimpleDocument.new({"a" => 42, "b" => 43}, "nobody")
+        @document.should_not == SimpleDocument.new({ "a" => 44, "b" => 45 }, "body")
+        @document.should_not == SimpleDocument.new({ "a" => 42, "b" => 43 }, "nobody")
       end
     end
 
@@ -174,7 +174,7 @@ module DocStorage
           "a: 42\nb: 43\nBoundary: =====\n\nline1\nline2\n--=====\nbullshit",
           :detect
         ).should == SimpleDocument.new(
-          {"a" => "42", "b" => "43", "Boundary" => "====="},
+          { "a" => "42", "b" => "43", "Boundary" => "=====" },
           "line1\nline2"
         )
       end
