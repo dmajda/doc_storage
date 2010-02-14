@@ -238,6 +238,11 @@ module DocStorage
           "a: 42\nb: 43\n\nline1\nline2"
       end
 
+      it "serializes document with ugly header" do
+        @document_with_ugly_header.to_s.should ==
+          "a: \"\\377\\377\\000\\a\\b\\t\\n\\v\\f\\r\\\"'\\\\\\377\\377\\000\\a\\b\\t\\n\\v\\f\\r\\\"'\\\\\"\n\n"
+      end
+
       it "does not serialize document with invalid header name" do
         lambda {
           @document_with_invalid_header.to_s

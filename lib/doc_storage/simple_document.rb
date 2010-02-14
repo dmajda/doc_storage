@@ -245,7 +245,12 @@ module DocStorage
       end
 
       serialized_headers = @headers.keys.sort.inject("") do |acc, key|
-        acc + "#{key}: #{@headers[key]}\n"
+        value_is_simple = @headers[key] !~ /\A\s+/ &&
+                          @headers[key] !~ /\s+\Z/ &&
+                          @headers[key] !~ /[\n\r]/
+        value = value_is_simple ? @headers[key] : @headers[key].inspect
+
+        acc + "#{key}: #{value}\n"
       end
 
       serialized_headers + "\n" + @body
