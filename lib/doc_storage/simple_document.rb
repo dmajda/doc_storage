@@ -235,21 +235,34 @@ module DocStorage
 
     # Returns string representation of this document. The result is in the
     # format described in the +SimpleDocument+ class documentation.
+    #
+    # Raises +SyntaxError+ if any document header has invalid name.
     def to_s
+      @headers.keys.each do |name|
+        if name !~ /\A[a-zA-Z0-9-]+\Z/
+          raise SyntaxError, "Invalid header name: #{name.inspect}."
+        end
+      end
+
       serialized_headers = @headers.keys.sort.inject("") do |acc, key|
         acc + "#{key}: #{@headers[key]}\n"
       end
+
       serialized_headers + "\n" + @body
     end
 
     # Saves this document to an +IO+-like object. The result is in the format
     # described in the +SimpleDocument+ class documentation.
+    #
+    # Raises +SyntaxError+ if any document header has invalid name.
     def save(io)
       io.write(to_s)
     end
 
     # Saves this document to a file. The result is in the format described in
     # the +SimpleDocument+ class documentation.
+    #
+    # Raises +SyntaxError+ if any document header has invalid name.
     def save_file(file)
       File.open(file, "w") { |f| save(f) }
     end

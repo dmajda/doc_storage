@@ -30,6 +30,10 @@ module DocStorage
         { "a" => "\xFF\377\0\a\b\t\n\v\f\r\"'\\\xFF\377\0\a\b\t\n\v\f\r\"'\\" },
         ""
       )
+      @document_with_invalid_header = SimpleDocument.new(
+        { "in\nvalid" => "42" },
+        ""
+      )
     end
 
     describe "initialize" do
@@ -232,6 +236,12 @@ module DocStorage
       it "serializes document with headers and body" do
         @document_with_headers_with_body.to_s.should ==
           "a: 42\nb: 43\n\nline1\nline2"
+      end
+
+      it "does not serialize document with invalid header name" do
+        lambda {
+          @document_with_invalid_header.to_s
+        }.should raise_error(SyntaxError, "Invalid header name: \"in\\nvalid\".")
       end
     end
 

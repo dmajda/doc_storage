@@ -132,6 +132,9 @@ module DocStorage
 
     # Returns string representation of this document. The result is in the
     # format described in the +MultipartDocument+ class documentation.
+    #
+    # Raises +SyntaxError+ if any document header in any contained document has
+    # invalid name.
     def to_s
       # The boundary is just a random string. We do not check if the boudnary
       # appears anywhere in the subdocuments, which may lead to malformed
@@ -146,12 +149,18 @@ module DocStorage
 
     # Saves this document to an +IO+-like object. The result is in the format
     # described in the +MultipartDocument+ class documentation.
+    #
+    # Raises +SyntaxError+ if any document header in any contained document has
+    # invalid name.
     def save(io)
       io.write(to_s)
     end
 
     # Saves this document to a file. The result is in the format described in
     # the +MultipartDocument+ class documentation.
+    #
+    # Raises +SyntaxError+ if any document header in any contained document has
+    # invalid name.
     def save_file(file)
       File.open(file, "w") { |f| save(f) }
     end
