@@ -126,10 +126,6 @@ module DocStorage
           result
         end
 
-        def trim_last_char(s)
-          s[0..-2]
-        end
-
         def parse_body(io, boundary)
           if boundary
             result = ""
@@ -139,22 +135,15 @@ module DocStorage
                 # Trim last newline from the body as it belongs to the boudnary
                 # logically. This behavior is implemented to allow bodies with
                 # no trailing newline).
-                return trim_last_char(result)
+                return result[0..-2]
               end
 
               result += line
             end
 
-            # IO#readline always returns a newline at the end of a line, even
-            # when it physically wasn't there (which can happen at the end of a
-            # file). Note that only IO and its descendants behave this way (not
-            # StringIO, for example).
-            io.is_a?(IO) ? trim_last_char(result) : result
+            result
           else
-            # IO#read always returns a newline at the end of the input, even
-            # when it physically wasn't there. Note that only IO and its
-            # descendants behave this way (not StringIO, for example).
-            io.is_a?(IO) ? trim_last_char(io.read) : io.read
+            io.read
           end
         end
 

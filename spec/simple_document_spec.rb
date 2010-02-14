@@ -198,19 +198,6 @@ module DocStorage
           "====="
         ).should == @document_with_headers_with_body
       end
-
-      it "works around the IO#readline bug" do
-        File.open(SIMPLE_FIXTURE_FILE, "r") do |f|
-          SimpleDocument.load(f).should == @document_with_headers_with_body
-        end
-      end
-
-      it "works around the IO#read bug when passed a boundary" do
-        File.open(SIMPLE_FIXTURE_FILE, "r") do |f|
-          SimpleDocument.load(f, "=====").should ==
-            @document_with_headers_with_body
-        end
-      end
     end
 
     describe "load_file" do
